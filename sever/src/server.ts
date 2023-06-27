@@ -1,16 +1,23 @@
-const express = require("express");
+import express from 'express'
 const server = express();
 const hostName = "localhost";
-const mysql = require("./Service/Connection")
-require("dotenv").config()
+require("dotenv/config")
 const port = process.env.PORT || 8080;
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import cors from "cors"
+import bodyParser from "body-parser";
+import router from './Router/index.router.ts'
+import {  Request, Response } from 'express';
+
+
 server.use(express.static("public"));
 server.use(cors());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.get("/",(req,res)=>{
+server.use("/",router);
+
+
+
+server.get("/",(req:Request,res:Response)=>{
     res.send("hello word")
 })
 server.listen(port,()=>{
