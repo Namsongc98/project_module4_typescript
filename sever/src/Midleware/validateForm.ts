@@ -4,8 +4,8 @@ import { NextFunction, Request, Response } from 'express';
 const validatorRegister = [
   // validator Email
   check("email")
-    .exists()
-    .withMessage("Vui lòng nhập email")
+    .notEmpty()
+    .withMessage("Vui lòng nhập Email")
     .custom((value) => {
       if (value.includes(" "))
         throw new Error(
@@ -19,15 +19,15 @@ const validatorRegister = [
     .withMessage("Trường Email cần ít nhất 15 đến 50 kí tự"),
   // validator pasword
   check("password")
-    .exists()
+    .notEmpty()
     .withMessage("Vui lòng nhập password")
     .custom((value) => {
       if (value.includes(" "))
-        throw new Error("Vui lòng kiểm tra lại, mật khẩu không chứa dấu cách ");
+        throw new Error(" Mật khẩu không chứa dấu cách ");
       return true;
     })
     .isLength({ min: 6, max: 20 })
-    .withMessage("Trường passwordcần  chứa 6 - 20 kí tự "),
+    .withMessage(" Password cần  chứa 6 - 20 kí tự "),
   check("role").exists(),
 ];
 
@@ -37,7 +37,7 @@ const validatorRegister = [
 // login 
 const validateLogin = [
   check("email")
-    .exists()
+    .notEmpty()
     .withMessage("Vui lòng nhập email")
     .custom((value) => {
       if (value.includes(" "))
@@ -52,7 +52,7 @@ const validateLogin = [
     .withMessage("Trường Email cần ít nhất 15 đến 40 kí tự"),
   // validator pasword
   check("password")
-    .exists()
+    .notEmpty()
     .withMessage("Vui lòng nhập password")
     .custom((value) => {
       if (value.includes(" "))
@@ -65,8 +65,10 @@ const validateLogin = [
 
 const validateResult = (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
+  
     if (!errors.isEmpty())
       return res.status(400).json({
+        status: 400,
         message: errors.array()[0].msg,
       });
     next();

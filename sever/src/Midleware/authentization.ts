@@ -1,9 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import pool from "../Service/Connection";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { OkPacket, RowDataPacket } from "mysql2";
-import { error } from "console";
-
+import jwt from "jsonwebtoken";
 const authentization = async (
   req: Request,
   res: Response,
@@ -19,7 +15,6 @@ const authentization = async (
     } else {
       jwt.verify(isAuthorization!, process.env.SECRET!, (error) => {
         if (error) {
-          console.log(error);
           return res.status(401).json({
             message: error,
           });
