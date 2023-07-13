@@ -91,24 +91,5 @@ const patchProfile = async (req: Request, res: Response) => {
   });
 };
 
-// const getCurrenUser = async(req:Request, res:Response)=>{
-//   const {id_user} = req.params
 
-// if(id_user)
-
-//   try {
-//     const query = "SELECT * FROM modules_4.user where id_user = ?";
-//     const [rows] = await pool.promise().execute(query,[id_user.id])
-//     console.log(rows)
-//     res.status(200).json({
-//       message: " Lấy dữ liệu thành công",
-//       data: rows
-//     })
-//   } catch (error) {
-//     console.log(error)
-//     res.status(400).json({
-//       message: "không có user này"
-//     })
-//   }
-// }
 export { postUser, getUser, patchProfile };
