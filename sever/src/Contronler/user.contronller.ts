@@ -1,7 +1,7 @@
 import pool from "../Service/Connection";
 import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
-import { Request, Response } from "express";
+import { Request, Response, query } from "express";
 import multer from "multer";
 
 // get All User
@@ -10,6 +10,7 @@ const getUser = async (req: Request, res: Response) => {
     const query =
       "SELECT * FROM modules_4.user join modules_4.evaluate on user.id_user = evaluate.id_user where not role = 1";
     const [rows] = await pool.promise().execute(query);
+    console.log(rows)
     res.status(200).json({
       message: "Lấy dữ liệu người dùng thành công",
       data: rows,
@@ -70,7 +71,6 @@ const patchProfile = async (req: Request, res: Response) => {
           UrlAvatar,
           id_user,
         ];
-
         const query =
           "UPDATE  modules_4.user SET fistname_user = ?, lastname_user = ?, phone_user =? ,age =?,  img_user = ? WHERE id_user = ?";
         await pool.promise().execute(query, updateUser);
@@ -90,6 +90,21 @@ const patchProfile = async (req: Request, res: Response) => {
     }
   });
 };
+const getuserSearch = async (req: Request, res: Response) => {
+  const { name } = req.query
+  const query = `select * from modules_4.user where fistname_user like "%${name}%" or lastname_user like "%${name}%"`
+  try {
+    const [rows] = await pool.promise().execute(query)
+    res.status(200).json({
+      messager: "thành công",
+      data: rows
+    })
+  } catch (error) {
+    res.status(500).json({
+      messager: "thất bại",
+    })
+  }
+}
 
 
-export { postUser, getUser, patchProfile };
+export { postUser, getUser, patchProfile, getuserSearch };

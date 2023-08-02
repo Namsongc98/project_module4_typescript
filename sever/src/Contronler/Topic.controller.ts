@@ -116,8 +116,10 @@ const getIAdvances = async (req: Request, res: Response) => {
 
 const deleteTopic = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const queryQuestion = `DELETE FROM modules_4.question WHERE id_topic = (?)`
   const query = `DELETE FROM modules_4.topic WHERE id_topic = (?)`;
   try {
+    await pool.promise().execute(queryQuestion, [id]);
     await pool.promise().execute(query, [id]);
     res.status(200).json({
       message: "Lấy dữ liệu thành công",
